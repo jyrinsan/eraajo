@@ -1,4 +1,6 @@
-package fi.tutkimusprosessi.eraajo;
+package fi.tutkimusprosessi.eraajo.to;
+
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,5 +17,9 @@ public class Person {
 	
 	private String firstName;
 	private String lastName;
+	private LocalDate birthDate;
+	
+	private String group;
+	private Integer count;
 	
 }
