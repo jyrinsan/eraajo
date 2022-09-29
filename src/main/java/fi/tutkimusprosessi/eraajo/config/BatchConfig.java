@@ -1,4 +1,4 @@
-package fi.tutkimusprosessi.eraajo;
+package fi.tutkimusprosessi.eraajo.config;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -6,9 +6,15 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import fi.tutkimusprosessi.eraajo.batch.PersonProcessor;
+import fi.tutkimusprosessi.eraajo.batch.PersonReader;
+import fi.tutkimusprosessi.eraajo.batch.PersonWriter;
+import fi.tutkimusprosessi.eraajo.to.Person;
 
 @Configuration
 @EnableBatchProcessing
@@ -31,7 +37,7 @@ public class BatchConfig {
 	  }
 	  
 	  @Bean
-	  public PersonWriter writer() {
+	  public ItemWriter<? super Person> writer() {
 	    return new PersonWriter();
 	  }
 	  

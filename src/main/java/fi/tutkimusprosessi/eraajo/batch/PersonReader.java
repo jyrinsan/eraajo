@@ -1,4 +1,4 @@
-package fi.tutkimusprosessi.eraajo;
+package fi.tutkimusprosessi.eraajo.batch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,24 +14,30 @@ import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fi.tutkimusprosessi.eraajo.model.PersonEntity;
+import fi.tutkimusprosessi.eraajo.model.PersonRepository;
+import fi.tutkimusprosessi.eraajo.to.Person;
+
 public class PersonReader implements ItemStreamReader<Person> {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PersonReader.class);
 
 	@Autowired
-	private PersonRepository repo;
+	private PersonRepository personRepo;
 	
-	private List<Person> personList = new ArrayList();
+	private List<Person> personList = new ArrayList<Person>();
 	private int index = 0;
 	
 	@Override
 	public void open(ExecutionContext executionContext) throws ItemStreamException {
-		logger.debug("open");
 		
-		List<PersonEntity> personEntities = (List<PersonEntity>) repo.findAll();
+		List<PersonEntity> personEntities = (List<PersonEntity>) personRepo.findAll();
 		for (PersonEntity entity: personEntities) {
-			Person person = Person.builder().firstName(entity.getFirstName())
-					.lastName(entity.getLastName()).build();
+			Person person = Person.builder()
+					.firstName(entity.getFirstName())
+					.lastName(entity.getLastName())
+					.birthDate(entity.getBirthDate())
+					.build();
 			personList.add(person);
 		}
 		
@@ -39,12 +45,9 @@ public class PersonReader implements ItemStreamReader<Person> {
 		
 	@Override
 	public Person read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-		logger.debug("read");
 			
 		while (index < personList.size()) {
-			logger.debug("index {}", index);
 			Person person = personList.get(index);
-			logger.debug("person {}", person);
 			index++;
 			return person;
 		}

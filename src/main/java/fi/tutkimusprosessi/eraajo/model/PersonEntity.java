@@ -1,6 +1,7 @@
-package fi.tutkimusprosessi.eraajo;
+package fi.tutkimusprosessi.eraajo.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +44,11 @@ public class PersonEntity implements Serializable{
 	@Column(
 			name = "last_name",
 			nullable = true)
-	private String lastName;	
+	private String lastName;
+	
+	@Column(
+			name = "birth_date",
+			nullable = true)
+	private LocalDate birthDate;
 
 }

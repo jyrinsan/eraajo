@@ -1,7 +1,17 @@
+DROP TABLE person IF EXISTS;
 DROP TABLE people IF EXISTS;
 
 CREATE TABLE person  (
     person_id BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     first_name VARCHAR(20),
-    last_name VARCHAR(20)
+    last_name VARCHAR(20),
+    birth_date DATE
 );
+
+CREATE TABLE people  (
+    people_id BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    people_group VARCHAR(20),
+    person_count INT
+);
+
+CREATE SEQUENCE HIBERNATE_SEQUENCE START WITH 1 INCREMENT BY 1;
