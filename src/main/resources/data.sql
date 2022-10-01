@@ -10,7 +10,7 @@ INSERT INTO person (first_name, last_name, birth_date) VALUES ('Jonna', 'Joukaha
 INSERT INTO person (first_name, last_name, birth_date) VALUES ('Seija', 'Sammakko', '2008-11-17');
 INSERT INTO person (first_name, last_name, birth_date) VALUES ('Leila', 'Lepakko', '2008-11-17');
 
-INSERT INTO person (first_name, last_name, birth_date) VALUES ('Sanna', 'Salaatti', '1972-11-17');
+INSERT INTO person (first_name, last_name, birth_date) VALUES ('Sanna', 'Salaatti', '1872-11-17');
 INSERT INTO person (first_name, last_name, birth_date) VALUES ('Tero', 'Tomaatti', '1970-11-17');
 INSERT INTO person (first_name, last_name, birth_date) VALUES ('Tiina', 'Tomaatti', '2005-11-17');
 INSERT INTO person (first_name, last_name, birth_date) VALUES ('Taina', 'Tomaatti', '2006-11-17');
@@ -23,4 +23,3 @@ INSERT INTO person (first_name, last_name, birth_date) VALUES ('Mikko', 'Viherla
 INSERT INTO person (first_name, last_name, birth_date) VALUES ('Matti', 'Viherlaakso', '1970-11-17');
 
 INSERT INTO person (first_name, last_name, birth_date) VALUES ('Liina', 'Liinamo', '1970-11-17');
-INSERT INTO person (first_name, last_name, birth_date) VALUES (null, 'Liinamo', null);

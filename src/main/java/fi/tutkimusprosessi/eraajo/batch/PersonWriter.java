@@ -45,6 +45,8 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 				int count = adultsEntity.getCount();
 				count ++;
 				adultsEntity.setCount(count);
+			} else {
+				throw new UnknownGroupException("Tuntematon ryhmä");
 			}
 		}
 

@@ -24,8 +24,10 @@ public class PersonProcessor implements ItemProcessor<Person, Person> {
 		String group;
 		if (age < 18)
 			group = "children";
-		else
+		else if (age < 120)
 			group = "adults";
+		else
+			group = "other";
 		
 		Person person2 = Person.builder()
 				.group(group)
