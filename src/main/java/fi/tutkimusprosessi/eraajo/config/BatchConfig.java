@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import fi.tutkimusprosessi.eraajo.batch.PersonDataIncompleteException;
 import fi.tutkimusprosessi.eraajo.batch.PersonProcessor;
 import fi.tutkimusprosessi.eraajo.batch.PersonReader;
 import fi.tutkimusprosessi.eraajo.batch.PersonWriter;
@@ -58,6 +59,9 @@ public class BatchConfig {
 	      .reader(reader())
 	      .processor(processor())
 	      .writer(writer())
+	      .faultTolerant()
+	      .retryLimit(3)
+	      .retry(PersonDataIncompleteException.class)
 	      .build();
 	  }
 
