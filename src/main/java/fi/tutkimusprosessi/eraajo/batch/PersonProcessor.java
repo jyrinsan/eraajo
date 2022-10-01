@@ -15,6 +15,9 @@ public class PersonProcessor implements ItemProcessor<Person, Person> {
 	
 	@Override
 	public Person process(Person person) throws Exception {
+		
+		if (person.getBirthDate() == null)
+			throw new PersonDataIncompleteException("Henkilön tiedot tietokannassa ovat puutteelliset");
 	
 		int age = Period.between(person.getBirthDate(), LocalDate.now()).getYears(); 
 		
@@ -24,7 +27,7 @@ public class PersonProcessor implements ItemProcessor<Person, Person> {
 		else
 			group = "adults";
 		
-		Person person2 = person.builder()
+		Person person2 = Person.builder()
 				.group(group)
 				.count(1)
 				.build();

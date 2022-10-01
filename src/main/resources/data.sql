@@ -23,3 +23,4 @@ INSERT INTO person (first_name, last_name, birth_date) VALUES ('Mikko', 'Viherla
 INSERT INTO person (first_name, last_name, birth_date) VALUES ('Matti', 'Viherlaakso', '1970-11-17');
 
 INSERT INTO person (first_name, last_name, birth_date) VALUES ('Liina', 'Liinamo', '1970-11-17');
+INSERT INTO person (first_name, last_name, birth_date) VALUES (null, 'Liinamo', null);
