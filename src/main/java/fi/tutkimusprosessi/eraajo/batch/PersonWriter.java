@@ -21,20 +21,20 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 	@Autowired
 	private PeopleRepository peopleRepo;
 	
+	private List<PeopleEntity> entities = new ArrayList<PeopleEntity> ();
+	
+	private PeopleEntity childrenEntity = PeopleEntity.builder()
+		.group("children")
+		.count(0)
+		.build();
+	private PeopleEntity adultsEntity = PeopleEntity.builder()
+		.group("adults")
+		.count(0)
+		.build();
+	
 	@Override
 	public void write(List<? extends Person> persons) throws Exception {
 		logger.debug("write, items {}", persons);
-		
-		List<PeopleEntity> entities = new ArrayList<PeopleEntity> ();
-		
-		PeopleEntity childrenEntity = PeopleEntity.builder()
-			.group("children")
-			.count(0)
-			.build();
-		PeopleEntity adultsEntity = PeopleEntity.builder()
-			.group("adults")
-			.count(0)
-			.build();
 		
 		for (Person person: persons) {
 			if (person.getGroup().equals("children")) {
@@ -46,12 +46,9 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 				count ++;
 				adultsEntity.setCount(count);
 			}
-			
 		}
 
-		entities.add(adultsEntity);
-		entities.add(childrenEntity);
-		
+		logger.debug("tallennetaan entityt {}", entities);
 		peopleRepo.saveAll(entities);
 	}
 	
@@ -65,8 +62,9 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 	}
 
 	@Override
-	public void open(ExecutionContext executionContext) throws ItemStreamException {
-
+	public void open(ExecutionContext executionContext) throws ItemStreamException {	
+		entities.add(adultsEntity);
+		entities.add(childrenEntity);
 	}
 
 	@Override
