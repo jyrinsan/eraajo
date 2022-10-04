@@ -1,5 +1,6 @@
 package fi.tutkimusprosessi.eraajo.batch;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

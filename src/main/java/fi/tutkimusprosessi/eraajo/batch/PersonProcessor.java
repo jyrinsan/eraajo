@@ -15,20 +15,30 @@ public class PersonProcessor implements ItemProcessor<Person, Person> {
 	
 	@Override
 	public Person process(Person person) throws Exception {
+		logger.info("processing person {}", person);
 	
-		int age = Period.between(person.getBirthDate(), LocalDate.now()).getYears(); 
+		int age = Period.between(person.getBirthDate(), LocalDate.now()).getYears();
+		logger.debug("age on {}", age);
 		
 		String group;
-		if (age < 18)
+		if (age < 0) {
+			logger.error("prosessorissa tapahtui virhe");
+			person.setBirthDate(LocalDate.now());
+			throw new PersonDataIncompleteException("Henkilön syntymäaika oli tulevaisuudessa");	
+		}
+		else if (age < 18)
 			group = "children";
-		else
+		else if (age < 120)
 			group = "adults";
+		else
+			group = "other";
 		
-		Person person2 = person.builder()
+		Person person2 = Person.builder()
 				.group(group)
 				.count(1)
 				.build();
 		
+		logger.info("palautetaan {}", person2);
 		return person2;
 	}
 

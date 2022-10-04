@@ -1,5 +1,9 @@
 package fi.tutkimusprosessi.eraajo.config;
 
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -8,9 +12,11 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import fi.tutkimusprosessi.eraajo.batch.PersonDataIncompleteException;
 import fi.tutkimusprosessi.eraajo.batch.PersonProcessor;
 import fi.tutkimusprosessi.eraajo.batch.PersonReader;
 import fi.tutkimusprosessi.eraajo.batch.PersonWriter;
@@ -25,6 +31,8 @@ public class BatchConfig {
 
 	  @Autowired
 	  public StepBuilderFactory stepBuilderFactory;
+	  
+	  private static final Logger logger = LoggerFactory.getLogger(BatchConfig.class);
 	  
 	  @Bean
 	  public PersonProcessor processor() {
@@ -58,6 +66,9 @@ public class BatchConfig {
 	      .reader(reader())
 	      .processor(processor())
 	      .writer(writer())
+	      .faultTolerant()
+	      .retryLimit(3)
+	      .retry(PersonDataIncompleteException.class)
 	      .build();
 	  }
 
