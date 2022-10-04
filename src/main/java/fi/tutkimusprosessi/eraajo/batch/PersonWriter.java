@@ -18,7 +18,7 @@ import fi.tutkimusprosessi.eraajo.to.Person;
 
 public class PersonWriter implements ItemStreamWriter<Person> {
 	
-	private static final Logger logger = LoggerFactory.getLogger(PersonWriter.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersonWriter.class);
 
 	@Autowired
 	private PeopleRepository peopleRepo;
@@ -27,7 +27,7 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 	
 	@Override
 	public void write(List<? extends Person> persons) throws Exception {
-		logger.debug("write, items {}", persons);
+		LOGGER.debug("PersonWriter - write, persons {}", persons);
 		
 		for (Person person: persons) {
 			if (person.getGroup().equals("children")) {
@@ -47,21 +47,13 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 					}
 				}
 			} else {
-				logger.error("Tuntematon ryhmä");
-				//person.setBirthDate(LocalDate.now().minusYears(20));
-				//throw new UnknownGroupException("Tuntematon ryhmä");
+				LOGGER.error("Tuntematon ryhmä");
+				throw new Exception("Tuntematon ryhmä");
 			}
 		}
 
-		logger.debug("tallennetaan entityt {}", entities);
+		LOGGER.debug("tallennetaan entityt {}", entities);
 		peopleRepo.saveAll(entities);
-	}
-	
-	private void printPeopleData(Iterable<PeopleEntity> list) {
-		System.out.println("--- People-taulu ---");
-		for (PeopleEntity entity: list) {
-			System.out.println(entity.getGroup() + " : " + entity.getCount());
-		}
 	}
 
 	@Override
@@ -77,7 +69,7 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 				.count(0)
 				.build();
 			PeopleEntity otherEntity = PeopleEntity.builder()
-					.group(null)
+					.group("other")
 					.count(0)
 					.build();
 				
@@ -93,7 +85,6 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 
 	@Override
 	public void update(ExecutionContext executionContext) throws ItemStreamException {
-		printPeopleData(peopleRepo.findAll());
 		
 	}
 

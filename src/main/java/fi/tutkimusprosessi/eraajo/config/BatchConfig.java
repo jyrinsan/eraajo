@@ -16,7 +16,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import fi.tutkimusprosessi.eraajo.batch.PersonDataIncompleteException;
 import fi.tutkimusprosessi.eraajo.batch.PersonProcessor;
 import fi.tutkimusprosessi.eraajo.batch.PersonReader;
 import fi.tutkimusprosessi.eraajo.batch.PersonWriter;
@@ -31,8 +30,6 @@ public class BatchConfig {
 
 	  @Autowired
 	  public StepBuilderFactory stepBuilderFactory;
-	  
-	  private static final Logger logger = LoggerFactory.getLogger(BatchConfig.class);
 	  
 	  @Bean
 	  public PersonProcessor processor() {
@@ -53,7 +50,6 @@ public class BatchConfig {
 	  public Job job(Step step1) {
 	    return jobBuilderFactory.get("job")
 	      .incrementer(new RunIdIncrementer())
-	      //.listener(listener)
 	      .flow(step1)
 	      .end()
 	      .build();
@@ -68,7 +64,7 @@ public class BatchConfig {
 	      .writer(writer())
 	      .faultTolerant()
 	      .retryLimit(3)
-	      .retry(PersonDataIncompleteException.class)
+	      .retry(Exception.class)
 	      .build();
 	  }
 
