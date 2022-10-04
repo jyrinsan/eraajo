@@ -1,5 +1,6 @@
 package fi.tutkimusprosessi.eraajo.batch;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fi.tutkimusprosessi.eraajo.model.PeopleEntity;
 import fi.tutkimusprosessi.eraajo.model.PeopleRepository;
+import fi.tutkimusprosessi.eraajo.model.PersonEntity;
 import fi.tutkimusprosessi.eraajo.to.Person;
 
 public class PersonWriter implements ItemStreamWriter<Person> {
@@ -23,30 +25,31 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 	
 	private List<PeopleEntity> entities = new ArrayList<PeopleEntity> ();
 	
-	private PeopleEntity childrenEntity = PeopleEntity.builder()
-		.group("children")
-		.count(0)
-		.build();
-	private PeopleEntity adultsEntity = PeopleEntity.builder()
-		.group("adults")
-		.count(0)
-		.build();
-	
 	@Override
 	public void write(List<? extends Person> persons) throws Exception {
 		logger.debug("write, items {}", persons);
 		
 		for (Person person: persons) {
 			if (person.getGroup().equals("children")) {
-				int count = childrenEntity.getCount();
-				count ++;
-				childrenEntity.setCount(count);
+				for (PeopleEntity entity: entities) {
+					if (entity.getGroup().equals("children")) {
+						int count = entity.getCount();
+						count ++;
+						entity.setCount(count);
+					}
+				}
 			} else if (person.getGroup().equals("adults")) {
-				int count = adultsEntity.getCount();
-				count ++;
-				adultsEntity.setCount(count);
+				for (PeopleEntity entity: entities) {
+					if (entity.getGroup().equals("adults")) {
+						int count = entity.getCount();
+						count ++;
+						entity.setCount(count);
+					}
+				}
 			} else {
-				throw new UnknownGroupException("Tuntematon ryhmä");
+				logger.error("Tuntematon ryhmä");
+				//person.setBirthDate(LocalDate.now().minusYears(20));
+				//throw new UnknownGroupException("Tuntematon ryhmä");
 			}
 		}
 
@@ -55,18 +58,37 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 	}
 	
 	private void printPeopleData(Iterable<PeopleEntity> list) {
-		
 		System.out.println("--- People-taulu ---");
 		for (PeopleEntity entity: list) {
 			System.out.println(entity.getGroup() + " : " + entity.getCount());
 		}
-		
 	}
 
 	@Override
 	public void open(ExecutionContext executionContext) throws ItemStreamException {	
-		entities.add(adultsEntity);
-		entities.add(childrenEntity);
+		entities = (List<PeopleEntity>) peopleRepo.findAll();
+		if (entities.isEmpty()) {
+			PeopleEntity childrenEntity = PeopleEntity.builder()
+				.group("children")
+				.count(0)
+				.build();
+			PeopleEntity adultsEntity = PeopleEntity.builder()
+				.group("adults")
+				.count(0)
+				.build();
+			PeopleEntity otherEntity = PeopleEntity.builder()
+					.group(null)
+					.count(0)
+					.build();
+				
+			entities.add(adultsEntity);
+			entities.add(childrenEntity);
+			entities.add(otherEntity);
+		} else {
+			for (PeopleEntity entity: entities) {
+				entity.setCount(0);
+			}
+		}
 	}
 
 	@Override

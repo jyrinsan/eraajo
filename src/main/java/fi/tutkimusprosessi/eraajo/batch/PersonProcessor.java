@@ -16,9 +16,6 @@ public class PersonProcessor implements ItemProcessor<Person, Person> {
 	@Override
 	public Person process(Person person) throws Exception {
 		logger.info("processing person {}", person);
-		
-		if (person.getBirthDate() == null)
-			throw new PersonDataIncompleteException("Henkilön tiedot tietokannassa ovat puutteelliset");
 	
 		int age = Period.between(person.getBirthDate(), LocalDate.now()).getYears();
 		logger.debug("age on {}", age);
@@ -41,6 +38,7 @@ public class PersonProcessor implements ItemProcessor<Person, Person> {
 				.count(1)
 				.build();
 		
+		logger.info("palautetaan {}", person2);
 		return person2;
 	}
 
