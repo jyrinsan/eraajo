@@ -1,6 +1,7 @@
 package fi.tutkimusprosessi.eraajo.batch;
 
 import java.util.List;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,12 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 	@Autowired
 	private PeopleRepository peopleRepo;
 	
-	PeopleEntity entity = PeopleEntity.builder()
+	private PeopleEntity entity = PeopleEntity.builder()
 			.adultCount(0)
 			.childCount(0)
 			.build();
+	
+	private Random random = new Random(); 
 	
 	@Override
 	public void write(List<? extends Person> persons) throws Exception {
@@ -35,8 +38,13 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 			} else if (person.getGroup().equals("adults")) {
 				entity.setAdultCount(entity.getAdultCount() + 1);
 			} else {
-				LOGGER.error("Tuntematon ryhmä");
-				throw new Exception("Tuntematon ryhmä");
+				if (random.nextInt() < 0) {
+					Exception ex = new Exception("Tuntematon ryhmä");
+					LOGGER.error("Exception {}", ex.getMessage());
+					throw ex;
+				} else {
+					entity.setAdultCount(entity.getAdultCount() + 1);
+				}
 			}
 		}
 
@@ -45,7 +53,7 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 	}
 
 	@Override
-	public void open(ExecutionContext executionContext) throws ItemStreamException {	
+	public void open(ExecutionContext executionContext) throws ItemStreamException {
 	}
 
 	@Override

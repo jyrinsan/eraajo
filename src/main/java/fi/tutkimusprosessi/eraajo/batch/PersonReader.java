@@ -31,7 +31,6 @@ public class PersonReader implements ItemStreamReader<Person> {
 	public void open(ExecutionContext executionContext) throws ItemStreamException {
 		LOGGER.debug("PersonReader - open");
 		
-		
 		List<PersonEntity> personEntities = (List<PersonEntity>) personRepo.findAll();
 		for (PersonEntity entity: personEntities) {
 			Person person = Person.builder()
