@@ -14,6 +14,7 @@ CREATE TABLE people (
     people_id    INTEGER      PRIMARY KEY AUTOINCREMENT
                               UNIQUE
                               NOT NULL,
-    person_count INTEGER      NOT NULL,
-    people_group VARCHAR (20) NOT NULL
+    adult_count INTEGER      NOT NULL,
+    child_count INTEGER      NOT NULL,
+    timestamp DATETIME DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime'))
 );

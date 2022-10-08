@@ -23,7 +23,6 @@ public class PersonProcessor implements ItemProcessor<Person, Person> {
 		String group;
 		if (age < 0) {
 			LOGGER.error("prosessorissa tapahtui virhe");
-			person.setBirthDate(LocalDate.now());
 			throw new Exception("Henkilön syntymäaika oli tulevaisuudessa");	
 		}
 		else if (age < 18)
