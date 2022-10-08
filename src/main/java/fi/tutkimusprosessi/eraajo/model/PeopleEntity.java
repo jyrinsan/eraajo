@@ -1,7 +1,6 @@
 package fi.tutkimusprosessi.eraajo.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,13 +34,13 @@ public class PeopleEntity implements Serializable{
 	private Long id;
 	
 	@Column(
-			name = "people_group",
+			name = "adult_count",
 			nullable = false)
-	private String group;
+	private Integer adultCount;
 	
 	@Column(
-			name = "person_count",
+			name = "child_count",
 			nullable = false)
-	private Integer count;
+	private Integer childCount;
 
 }

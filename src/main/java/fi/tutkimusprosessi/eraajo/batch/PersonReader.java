@@ -1,13 +1,11 @@
 package fi.tutkimusprosessi.eraajo.batch;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ExecutionContext;
-import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.ItemStreamReader;
 import org.springframework.batch.item.NonTransientResourceException;
@@ -21,7 +19,7 @@ import fi.tutkimusprosessi.eraajo.to.Person;
 
 public class PersonReader implements ItemStreamReader<Person> {
 	
-	private static final Logger logger = LoggerFactory.getLogger(PersonReader.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersonReader.class);
 
 	@Autowired
 	private PersonRepository personRepo;
@@ -31,6 +29,8 @@ public class PersonReader implements ItemStreamReader<Person> {
 	
 	@Override
 	public void open(ExecutionContext executionContext) throws ItemStreamException {
+		LOGGER.debug("PersonReader - open");
+		
 		
 		List<PersonEntity> personEntities = (List<PersonEntity>) personRepo.findAll();
 		for (PersonEntity entity: personEntities) {
@@ -46,7 +46,8 @@ public class PersonReader implements ItemStreamReader<Person> {
 		
 	@Override
 	public Person read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-			
+		LOGGER.debug("PersonReader - read");	
+		
 		while (index < personList.size()) {
 			Person person = personList.get(index);
 			index++;
