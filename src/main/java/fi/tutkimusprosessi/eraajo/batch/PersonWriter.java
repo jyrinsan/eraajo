@@ -38,13 +38,9 @@ public class PersonWriter implements ItemStreamWriter<Person> {
 			} else if (person.getGroup().equals("adults")) {
 				entity.setAdultCount(entity.getAdultCount() + 1);
 			} else {
-				if (random.nextInt() < 0) {
-					Exception ex = new Exception("Tuntematon ryhmä");
-					LOGGER.error("Exception {}", ex.getMessage());
-					throw ex;
-				} else {
-					entity.setAdultCount(entity.getAdultCount() + 1);
-				}
+				Exception ex = new Exception("Tuntematon ryhmä");
+				LOGGER.error("Exception {}", ex.getMessage());
+				throw ex;
 			}
 		}
 

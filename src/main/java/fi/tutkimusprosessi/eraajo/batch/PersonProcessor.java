@@ -25,13 +25,9 @@ public class PersonProcessor implements ItemProcessor<Person, Person> {
 		
 		String group;
 		if (age < 0) {
-			if (random.nextInt() < 0) {
-				Exception ex = new Exception("satunnainen virhe prosessorissa");
-				LOGGER.error("Exception {}", ex.getMessage());
-				throw ex;
-			} else {
-				group = "children";
-			}
+			Exception ex = new Exception("satunnainen virhe prosessorissa");
+			LOGGER.error("Exception {}", ex.getMessage());
+			throw ex;
 		}
 		else if (age < 18)
 			group = "children";

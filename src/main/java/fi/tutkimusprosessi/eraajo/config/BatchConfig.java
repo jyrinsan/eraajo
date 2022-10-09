@@ -58,8 +58,8 @@ public class BatchConfig {
 	      .processor(processor())
 	      .writer(writer())
 	      .faultTolerant()
-	      .retryLimit(10)
-	      .retry(Exception.class)
+	      .skipLimit(2)
+	      .skip(Exception.class)
 	      .build();
 	  }
 
